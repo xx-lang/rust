@@ -1,5 +1,8 @@
 use ferris_says::say;
 use std::io::{stdout, BufWriter};
+use std::sync::{Mutex, Arc};
+use std::thread;
+// use std::rc::Rc;
 
 fn main() {
     let stdout = stdout();
@@ -40,4 +43,40 @@ fn main() {
 
     let rect = Rectangle{width:10,height:10};
     println!("rect {:?} area is {}", rect, rect.area());
+
+
+
+    // mutex
+    use_thread_mutex();
+}
+
+fn use_thread_mutex() {
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+            *num += 1;
+        });
+        handles.push(handle);
+    }
+
+
+    {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+            *num += 1;
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("result: {}", *counter.lock().unwrap());
+
 }
