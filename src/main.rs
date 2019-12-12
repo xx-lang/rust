@@ -1,6 +1,6 @@
 use ferris_says::say;
 use std::io::{stdout, BufWriter};
-use std::sync::{Mutex, Arc};
+use std::sync::{Arc, Mutex};
 use std::thread;
 // use std::rc::Rc;
 
@@ -9,7 +9,7 @@ fn main() {
     let out = b"Hello World";
     let width = 24;
 
-    static mut G1 : u8 = 10;
+    static mut G1: u8 = 10;
     // println!("global value {}", G1); // must in unsafe body
     unsafe {
         G1 = 20;
@@ -28,11 +28,10 @@ fn main() {
     let mut writer = BufWriter::new(stdout.lock());
     say(out, width, &mut writer).unwrap();
 
-
     #[derive(Debug)]
     struct Rectangle {
-        width : u32,
-        height : u32,
+        width: u32,
+        height: u32,
     }
 
     impl Rectangle {
@@ -41,10 +40,11 @@ fn main() {
         }
     }
 
-    let rect = Rectangle{width:10,height:10};
+    let rect = Rectangle {
+        width: 10,
+        height: 10,
+    };
     println!("rect {:?} area is {}", rect, rect.area());
-
-
 
     // mutex
     use_thread_mutex();
@@ -63,7 +63,6 @@ fn use_thread_mutex() {
         handles.push(handle);
     }
 
-
     {
         let counter = Arc::clone(&counter);
         let handle = thread::spawn(move || {
@@ -78,5 +77,4 @@ fn use_thread_mutex() {
     }
 
     println!("result: {}", *counter.lock().unwrap());
-
 }
