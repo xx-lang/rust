@@ -1,8 +1,13 @@
+#[warn(unused_variables)]
+
+mod cli;
+
 use ferris_says::say;
 use std::io::{stdout, BufWriter};
 use std::sync::{Arc, Mutex};
 use std::thread;
 // use std::rc::Rc;
+use cli::Cli;
 
 fn main() {
     let stdout = stdout();
@@ -20,9 +25,8 @@ fn main() {
     // println!("9 pow 3 = {}", x.pow(3));
 
     let x = 1;
-    let mut y = 2;
     // 注意这里专门用括号括起来了
-    let z = (y = x);
+    let z = x;
     println!("{:?}", z);
 
     let mut writer = BufWriter::new(stdout.lock());
@@ -48,6 +52,14 @@ fn main() {
 
     // mutex
     use_thread_mutex();
+
+    use_cli();
+}
+
+fn use_cli() {
+    let inst = Cli{args:1};
+    inst.say();
+
 }
 
 fn use_thread_mutex() {
