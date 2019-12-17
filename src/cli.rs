@@ -1,6 +1,5 @@
-
 pub struct Cli {
-    pub args: i32
+    pub args: i32,
 }
 
 impl Cli {
